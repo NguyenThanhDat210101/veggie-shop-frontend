@@ -1,0 +1,82 @@
+<section class="single-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="single-content">
+                    <h2>Rau củ quả</h2>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a [routerLink]="['/home']">Trang chủ</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Danh sách các loại rau
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="row" style="min-height: 700px !important;" *ngIf="isLoading">
+    <div class="spinner-border text-success" role="status" style="margin: auto; width: 6em;height: 6em;"></div>
+</div>
+<section class="product-list" *ngIf="!isLoading">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="product-filter">
+                            <div class="product-page-number">
+                                <p>Hiển thị {{(page-1)*12+1}}–{{((page-1)*12+12)>products.length?products.length:(page-1)*12+12}} trong số {{products.length}} sản phẩm</p>
+                            </div>
+                            <select class="product-short-select custom-select ml-auto" [(ngModel)]="keyF" (change)="sort(keyF)">
+                                <option selected value="">Tất cả sản phẩm</option>
+                                <option value="enteredDate">Sản phẩm mới</option>
+                                <option value="priceDesc">Giá giảm dần</option>
+                                <option value="priceAsc">Giá tăng dần</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row product-card-parent">
+                    <div class="col-3" *ngFor="let item of products | orderBy : key : reverse | paginate: { itemsPerPage: 12, currentPage: page}">
+                        <div class="product-card card-gape" *ngIf="item.quantity>0">
+                            <div class="product-img">
+                                <img [src]="item.image" [routerLink]="['/product-detail/'+item.productId]" style="cursor: pointer;" alt="product" />
+                                <ul class="product-widget">
+                                    <li>
+                                        <button [routerLink]="['/product-detail/'+item.productId]"><i class="fas fa-eye"></i></button>
+                                    </li>
+                                    <li>
+                                        <button (click)="toggleLike(item.productId)"><i class="fas fa-heart"></i></button>
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="product-content">
+                                <div class="product-name">
+                                    <h6><a [routerLink]="['/product-detail/'+item.productId]">{{item.name}}</a></h6>
+                                </div>
+                                <div class="product-price">
+                                    <h6><del *ngIf="item.discount != 0">{{item.price|currency:'VND'}}</del>{{item.price*(1 - item.discount/100) | currency:'VND'}}</h6>
+                                    <div class="product-rating" *ngIf="getAvgRate(item.productId)">
+                                        <i class="fas fa-star"></i><span>{{getAvgRate(item.productId)}}/{{countRate}}</span>
+                                    </div>
+                                </div>
+                                <div class="product-btn">
+                                    <a style="cursor: pointer;" (click)="addCart(item.productId, item.price*(1 - item.discount/100))"><i class="fas fa-shopping-basket"></i><span>Thêm Giỏ Hàng</span></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-lg-12">
+                        <ul class="pagination">
+                            <pagination-controls (pageChange)="page = $event" previousLabel="" nextLabel="" class="text-center my-page">
+                            </pagination-controls>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,79 @@
+<section class="single-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="single-content">
+                    <h2>Danh sách yêu thích</h2>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a [routerLink]="['/home']">Trang chủ</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Danh sách yêu thích
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="wish-part">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 text-center m-5" *ngIf="favorites.length < 1">
+                <h1 style="color: #49a010;">Không có sản phẩm nào trong danh sách yêu thích của bạn</h1>
+            </div>
+            <div class="col-lg-12" *ngIf="favorites.length > 0">
+                <div class="wish-list">
+                    <table class="table-list">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Sản phẩm</th>
+                                <th scope="col">Tên</th>
+                                <th scope="col">Giá</th>
+                                <th scope="col">Trạng thái</th>
+                                <th scope="col">Thêm giỏ hàng</th>
+                                <th scope="col">Hành động</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr *ngFor="let item of favorites| paginate: { itemsPerPage: 5, currentPage: page}, index as i">
+                                <td class="table-number">
+                                    <h5>{{i+1}}</h5>
+                                </td>
+                                <td class="table-product">
+                                    <img [src]="item.product.image" alt="product" style="cursor: pointer;" [routerLink]="['/product-detail/'+item.product.productId]" />
+                                </td>
+                                <td class="table-name">
+                                    <h5>{{item.product.name}}</h5>
+                                </td>
+                                <td class="table-price">
+                                    <h5>{{item.product.price*(1 - item.product.discount/100) | currency:'VND'}}</h5>
+                                </td>
+                                <td class="table-status">
+                                    <h5>{{item.product.quantity>0?'Còn hàng': 'Hết hàng'}}</h5>
+                                </td>
+                                <td class="table-shop">
+                                    <button class="btn btn-inline" (click)="addCart(item.product.productId, item.product.price*(1 - item.product.discount/100))" [disabled]="item.product.quantity<0">Thêm vào giỏ hàng</button>
+                                </td>
+                                <td class="table-action">
+                                    <a style="cursor: pointer;" (click)="delete(item.favoriteId, item.product.name)"><i class="fas fa-trash-alt"></i></a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <pagination-controls (pageChange)="page = $event" previousLabel="" nextLabel="" class="text-center my-page">
+                    </pagination-controls>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="wish-btn">
+                    <a [routerLink]="['/home']" class="btn btn-inline"><i class="fas fa-undo-alt"></i><span>Tiếp tục mua
+                            sắm</span></a><a [routerLink]="['/cart']" class="btn btn-inline"><i class="fas fa-check"></i>
+                        <span>Đến giỏ hàng</span></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

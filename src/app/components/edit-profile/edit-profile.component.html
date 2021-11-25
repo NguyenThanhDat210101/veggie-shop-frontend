@@ -1,0 +1,54 @@
+<ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+        <h4 class="modal-title">Chỉnh sửa thông tin cá nhân</h4>
+    </div>
+    <div class="modal-body">
+        <form [formGroup]="postForm" class="row">
+            <input type="hidden" formControlName='userId'>
+            <input type="hidden" formControlName="status">
+            <input type="hidden" formControlName="password">
+            <input type="hidden" formControlName="email">
+            <div class="col-6">
+                <div class="form-group col-12">
+                    <label for="name">Tên khách hàng</label>
+                    <input type="text" id="name" [ngClass]="{'is-invalid':postForm.get('name')?.touched && postForm.get('name')?.invalid}" class="form-control" formControlName="name">
+                    <small class="invalid-feedback">Tên không hợp lệ</small>
+                </div>
+                <div class="form-group col-12">
+                    <label for="address">Địa chỉ</label>
+                    <div class="input-group">
+                        <input type="text" id="address" [ngClass]="{'is-invalid':postForm.get('address')?.touched && postForm.get('address')?.invalid}" class="form-control" formControlName="address">
+                        <small class="invalid-feedback">Địa chỉ không hợp lệ</small>
+                    </div>
+                </div>
+                <div class="form-group col-12">
+                    <label for="phone">Số điện thoại</label>
+                    <div class="input-group">
+                        <input type="text" id="phone" [ngClass]="{'is-invalid':postForm.get('phone')?.touched && postForm.get('phone')?.invalid}" class="form-control" formControlName="phone">
+                        <small class="invalid-feedback">Số điện thoại không hợp lệ</small>
+                    </div>
+                </div>
+                <div class="form-group col-12">
+                    <label for="exampleFormControlSelect1">Giới tính</label>
+                    <select class="form-control" id="gender" name="gender" formControlName="gender">
+                        <option value="true">Nam</option>
+                        <option value="false">Nữ</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="col-12 text-center">
+                    <h3>Ảnh đại diện</h3>
+                    <img [src]="image" style="width: 150px; height: 150px; object-fit: cover;" class="img-fluid ${3|rounded-top,rounded-right,rounded-bottom,rounded-left,rounded-circle,|} mt-3 mb-3" alt="Ảnh sản phẩm">
+                    <div class="custom-file" style="width: 80%;">
+                        <input type="file" class="custom-file-input" id="customFile" (change)="onFileSelect($event)">
+                        <label class="custom-file-label" for="customFile">Chọn ảnh</label>
+                    </div>
+                </div>
+            </div>
+
+            <button class="col-2 ml-4 btn btn-inline p-2" [disabled]="postForm?.invalid" (click)="update()">Chỉnh sửa</button>
+        </form>
+    </div>
+</ng-template>
+<a (click)="open(content)">Sửa</a>

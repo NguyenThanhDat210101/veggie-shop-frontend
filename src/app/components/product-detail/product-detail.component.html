@@ -1,0 +1,176 @@
+<section class="single-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="single-content">
+                    <h2>Chi tiết sản phẩm</h2>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a [routerLink]="['/home']">Trang chủ</a></li>
+                        <li class="breadcrumb-item">
+                            <a [routerLink]="['/all-product']">Sản phẩm</a>
+                        </li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Chi tiết sản phẩm
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="row" style="min-height: 700px !important;" *ngIf="isLoading">
+    <div class="spinner-border text-success" role="status" style="margin: auto; width: 6em;height: 6em;"></div>
+</div>
+<section class="product-part" *ngIf="!isLoading">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 col-lg-6">
+                <img [src]="product.image" alt="product" />
+            </div>
+            <div class="col-md-6 col-lg-6">
+                <div class="product-name d-flex">
+                    <h3>{{product.name}}</h3>&nbsp;<small>({{product.category.categoryName}})</small>
+                </div>
+                <div class="product-review">
+                    <ngb-rating [rate]="getAvgRate(product.productId)" [starTemplate]="t" [readonly]="true" [max]="5"
+                            title="{{getAvgRate(product.productId)}} sao"></ngb-rating>
+                    <small> ({{countRate}} lượt đánh giá)</small>
+                </div>
+                <div class="product-price">
+                    <p><del *ngIf="product.discount != 0">{{product.price|currency:'VND'}}</del>{{product.price*(1 - product.discount/100) | currency:'VND'}}<small *ngIf="product.discount != 0" style="font-size: 11px;" class="badge badge-danger ml-2">-{{product.discount}}%</small></p>
+                </div>
+                <!-- <div class="product-summery"> -->
+                <small>({{product.category.categoryId==1?'Bán theo bó':'Bán theo cân'}})</small>
+                <!-- </div> -->
+                <div class="product-cart">
+                    <ul>
+                        <li>
+                            <a href="javascript:void(0);" style="cursor: pointer;" (click)="addCart(product.productId, product.price*(1 - product.discount/100))" class="btn btn-outline"><i class="fas fa-shopping-basket"></i><span>thêm giỏ
+                                    hàng</span></a>
+                        </li>
+                        <br>
+                        <li class="mt-3">
+                            <a style="cursor: pointer;" (click)="toggleLike(product.productId)"><i style="color: #49a010;" class="fas fa-heart"></i></a> {{totalLike}} lượt thích
+                        </li>
+                    </ul>
+                </div>
+                <div class="product-contact">
+                    <p>Liên hệ với chúng tôi</p>
+                    <h4><i class="fas fa-phone-alt"></i>09638111666</h4>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="product-info" *ngIf="!isLoading">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="product-info-content">
+                    <h2>Mô tả sản phẩm  <small style="font-size: 13px;">(Đã bán {{product.sold}} sản phẩm)</small> </h2>                   
+                    <div class="product-tab-desc">
+                        <p>
+                            {{product.description}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="product-info-content">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="product-filter d-flex">
+                                <div class="product-page-number">
+                                    <h2>Đánh giá sản phẩm</h2>
+                                </div>
+                                <select class="product-short-select custom-select ml-auto" [(ngModel)]="itemsComment" (change)="setItemsComment(itemsComment)">
+                                    <option selected value="3">Hiển thị 3 mục</option>
+                                    <option value="10">10</option>
+                                    <option value="25">25</option>
+                                    <option value="100">100</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <p *ngIf="rates.length==0" style="text-decoration: underline;">Sản phẩm này chưa có đánh giá nào.</p>
+                    <ul class="review-list">
+                        <li class="review-item" *ngFor="let item of rates | paginate: { itemsPerPage: itemsComment, currentPage: 1}">
+                            <div class="review-author">
+                                <a [href]="item.user.image"><img [src]="item.user.image" alt="avatar" /></a>
+                            </div>
+                            <div class="review-content">
+                                <h5>
+                                    <a>{{item.user.name}}</a> - <span>{{item.rateDate|date:'dd-MM-yyyy'}}</span>
+                                </h5>
+                                <ul>
+                                    <ngb-rating class="ml-2" [(rate)]="item.rating"
+                                    title="{{item.rating}} sao" [starTemplate]="t" [readonly]="true" [max]="5"></ngb-rating>
+                                </ul>
+                                <p>
+                                    {{item.comment}}
+                                </p>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="section new-part" *ngIf="!isLoading">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-heading">
+                    <h2 class="title">Sản phẩm liên quan</h2>
+                    <a href="shop-leftbar.html" class="btn btn-outline"><i class="fas fa-eye"></i>Xem thêm</a>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
+                <div ngxSlickItem class="slide col-3" *ngFor="let item of products | paginate: { itemsPerPage: 8, currentPage: 0}" >
+                    <div class="product-card" *ngIf="item.quantity>0">
+                        <div class="product-img">
+                            <img [src]="item.image" [routerLink]="['/product-detail/'+item.productId]" style="cursor: pointer;" alt="product" />
+                            <ul class="product-widget">
+                                <li>
+                                    <button [routerLink]="['/product-detail/'+item.productId]"><i class="fas fa-eye"></i></button>
+                                </li>
+                                <li>
+                                    <button (click)="toggleLike(item.productId)"><i class="fas fa-heart"></i></button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="product-content">
+                            <div class="product-name">
+                                <h6><a [routerLink]="['/product-detail/'+item.productId]">{{item.name}}</a></h6>
+                            </div>
+                            <div class="product-price">
+                                <h6><del *ngIf="item.discount != 0">{{item.price|currency:'VND'}}</del>{{item.price*(1 - item.discount/100) | currency:'VND'}}</h6>
+                                <div class="product-rating" *ngIf="getAvgRate(item.productId)">
+                                    <i class="fas fa-star"></i><span>{{getAvgRate(item.productId)}}/{{countRate}}</span>
+                                </div>
+                            </div>
+                            <div class="product-btn">
+                                <a style="cursor: pointer;" (click)="addCart(item.productId, item.price*(1 - item.discount/100))"><i class="fas fa-shopping-basket"></i><span>Thêm vào giỏ hàng</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ngx-slick-carousel>
+        </div>
+    </div>
+</section>
+
+<!-- star -->
+<ng-template #t let-fill="fill">
+    <span class="star" [class.full]="fill === 100" style="font-size: 90%;">
+        <span class="half" [style.width.%]="fill">
+            <i class="fa fa-star"></i>
+        </span>
+    <i class="fa fa-star"></i>
+    </span>
+</ng-template>

@@ -1,0 +1,141 @@
+<section class="single-banner">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="single-content">
+                    <h2>Tài khoản của tôi</h2>
+                    <ol class="breadcrumb">
+                        <li class="breadcrumb-item"><a [routerLink]="['/home']">Trang chủ</a></li>
+                        <li class="breadcrumb-item active" aria-current="page">
+                            Tài khoản của tôi
+                        </li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<section class="account-part">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="account-menu">
+                    <ul class="nav nav-tabs">
+                        <li>
+                            <a href="#pro" class="nav-link active" data-toggle="tab">Thông tin</a>
+                        </li>
+                        <li>
+                            <a href="#order" class="nav-link" data-toggle="tab">Lịch sử đặt hàng</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane active" id="pro">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-heading">
+                        <h2>Thông tin cá nhân</h2>
+                    </div>
+                </div>
+                <div class="col-lg-8 m-auto">
+                    <div class="account-card">
+                        <div class="account-title">
+                            <h3>Giới thiệu</h3>
+                            <app-edit-profile [id]="customer.userId" (editFinish)="finish()" class="pl-2 pr-2" style="cursor: pointer; border-radius: 10%; background-color: rgba(30, 150, 30, 0.884); color: white; font-size: 15px;"></app-edit-profile>
+                        </div>
+                        <div class="profile-intro">
+                            <div class="profile-author">
+                                <a [href]="customer.image"><img [src]="customer.image" style="object-fit: cover;" alt="01" /></a>
+                                <h4>{{customer.name}}</h4>
+                                <p><span>Tham gia:</span>{{customer.registerDate | date:'dd-MM-yyy'}}</p>
+                            </div>
+                            <ul class="account-list">
+                                <li>
+                                    <h6>Email:</h6>
+                                    <p>{{customer.email}}</p>
+                                </li>
+                                <li>
+                                    <h6>Số điện thoại:</h6>
+                                    <p>{{customer.phone}}</p>
+                                </li>
+                                <li>
+                                    <h6>Giới tính:</h6>
+                                    <p>{{customer.gender?'Nam':'Nữ'}}</p>
+                                </li>
+                                <li>
+                                    <h6>Địa chỉ:</h6>
+                                    <p>{{customer.address}}</p>
+                                </li>
+                                <!-- <li>
+                                    <h6>Tổng số đơn đã đặt:</h6>
+                                    <p>{{orders.length}}</p>
+                                </li> -->
+                                <li>
+                                    <h6>Giao dịch thành công:</h6>
+                                    <p>{{done}} đơn</p>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="tab-pane" id="order">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="section-heading">
+                        <h2>Lịch sử đặt hàng</h2>
+                    </div>
+                </div>
+                <div class="col-lg-12">
+                    <div class="order-content">
+                        <table class="table-list">
+                            <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">Ngày đặt</th>
+                                    <th scope="col">Tổng tiền</th>
+                                    <th scope="col" style="width: 30%;">Địa chỉ</th>
+                                    <th scope="col">Số điện thoại</th>
+                                    <th scope="col">Trạng thái</th>
+                                    <th scope="col">Hành động</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let item of orders | paginate: { itemsPerPage: 5, currentPage: page}, index as i">
+                                    <td class="table-order">
+                                        <p>{{i+1}}</p>
+                                    </td>
+                                    <td class="table-date">
+                                        <p>{{item.orderDate|date:'dd-MM-yyyy'}}</p>
+                                    </td>
+                                    <td class="table-total">
+                                        <p>{{item.amount|currency:'VND'}}</p>
+                                    </td>
+                                    <td class="table-address">
+                                        <p>{{item.address}}</p>
+                                    </td>
+                                    <td class="table-phone">
+                                        <p>{{item.phone}}</p>
+                                    </td>
+                                    <td class="table-status">
+                                        <p>{{item.status==0?'Chờ xác nhận':(item.status==1?'Đã xác nhận':(item.status==2)?'Đã thanh toán':'Đã huỷ')}}
+                                        </p>
+                                    </td>
+
+                                    <td class="table-action">
+                                        <app-order-detail [id]="item.ordersId"></app-order-detail>
+                                        <a [title]="item.status==0?'Huỷ đơn':'Không thể huỷ đơn này'" (click)="cancel(item.status==0?item.ordersId:-1)" [style]="item.status==0?'cursor: pointer':'cursor: not-allowed'"><i class="fas fa-trash-alt"></i></a>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <pagination-controls (pageChange)="page = $event" previousLabel="" nextLabel="" class="text-center my-page">
+                        </pagination-controls>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

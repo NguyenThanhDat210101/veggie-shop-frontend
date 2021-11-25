@@ -1,0 +1,83 @@
+<nav class="navbar-part">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="navbar-element">
+                    <ul class="left-widget">
+                        <li>
+                            <a class="icon icon-inline menu-bar" [routerLink]="['/home']"><i
+                                    class="fas fa-align-left"></i></a>
+                        </li>
+                    </ul>
+                    <a class="navbar-logo" [routerLink]="['/home']"><img src="images/logo.png" alt="logo" /></a>
+                    <div class="search-form navbar-src">
+                        <input type="text" placeholder="Tìm kiếm..." (keyup)="search($event)"/><a  style="color: white;" onMouseOver="this.style.color='gray'"
+                        onMouseOut="this.style.color='white'" [routerLink]="['/search/'+keyword]" class="btn btn-inline">
+                            <i class="fas fa-search"></i><span>Tìm kiếm</span>
+                        </a>
+                    </div>
+                    <ul class="right-widget">
+                        <li class="navbar-item navbar-dropdown">
+                            <a href="javascript:void(0);" class="icon icon-inline" style="cursor: pointer;"><i class="fas fa-user"></i></a>
+                            <ul class="dropdown-list">
+                                <li class="m-0">
+                                    <a class="dropdown-link" [routerLink]="['/sign-form']" *ngIf="!isLogin">Đăng ký &
+                                        Đăng nhập</a>
+                                </li>
+                                <li class="m-0">
+                                    <a class="dropdown-link" [routerLink]="['/profile']" *ngIf="isLogin">Thông tin người
+                                        dùng</a>
+                                </li>
+                                <li class="m-0">
+                                    <a class="dropdown-link" style="cursor: pointer;" onMouseOver="this.style.color='white'"
+                                    onMouseOut="this.style.color='#555555'" (click)="logout()"
+                                        *ngIf="isLogin">Đăng xuất</a>
+                                </li>
+                            </ul>
+                        </li>
+                        <li>
+                            <a class="icon icon-inline" [routerLink]="['/favorites']"><i
+                                    class="fas fa-heart"></i><sup>{{totalFavoriteItem}}</sup></a>
+                        </li>
+                        <li>
+                            <a class="icon icon-inline" [routerLink]="['/cart']"><i
+                                    class="fas fa-shopping-cart"></i><sup>{{totalCartItem}}</sup></a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="navbar-slide">
+                    <div class="navbar-content">
+                        <ul class="navbar-list">
+                            <li class="navbar-item">
+                                <a class="navbar-link" [routerLink]="['/home']"
+                                    routerLinkActive="router-link-active">Trang chủ</a>
+                            </li>
+                            <li class="navbar-item">
+                                <a class="navbar-link" [routerLink]="['/all-product']">Tất cả sản phẩm</a>
+                            </li>
+                            <li class="navbar-item navbar-dropdown navbar-megamenu">
+                                <a class="navbar-link dropdown-indicator"><span>Theo thể loại</span><i
+                                        class="fas fa-chevron-down"></i></a>
+                                <div class="megamenu">
+                                    <ul>
+                                        <li *ngFor="let item of categories">
+                                            <a [routerLink]="['/by-category/'+item.categoryId]"><i
+                                                    class="flaticon-vegetable"></i><span>{{item.categoryName}}</span></a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </li>
+                            <li class="navbar-item">
+                                <a class="navbar-link" [routerLink]="['/contact']">Liên hệ</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>

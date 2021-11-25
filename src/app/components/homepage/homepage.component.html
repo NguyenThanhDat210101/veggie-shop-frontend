@@ -1,0 +1,161 @@
+<section class="banner-part slider-arrow slider-dots">
+    <div class="banner-3">
+        <div class="banner-overlay">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-7 col-lg-6">
+                        <div class="banner-content-3">
+                            <h1>Thực phẩm lành mạnh là thành phần tốt cho sức khoẻ.</h1>
+                        </div>
+                    </div>
+                    <div class="col-md-5 col-lg-6"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+<div class="row" style="min-height: 700px !important;" *ngIf="isLoading">
+    <div class="spinner-border text-success" role="status" style="margin: auto; width: 6em;height: 6em;"></div>
+</div>
+<section class="section trend-part" *ngIf="!isLoading">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-heading">
+                    <h2 class="title">Sản phẩm thịnh hành</h2>
+                    <!-- <a href="product-list-1.html" class="btn btn-outline"><i class="fas fa-eye"></i>Xem thêm</a> -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
+                <div ngxSlickItem class="slide col-3" *ngFor="let item of productRated | paginate: { itemsPerPage: 8, currentPage: 0}">
+                    <div class="product-card" *ngIf="item.quantity>0">
+                        <div class="product-img">
+                            <img [src]="item.image" [routerLink]="['/product-detail/'+item.productId]" style="cursor: pointer;" alt="product" />
+                            <ul class="product-widget">
+                                <li>
+                                    <button [routerLink]="['/product-detail/'+item.productId]"><i
+                                            class="fas fa-eye"></i></button>
+                                </li>
+                                <li>
+                                    <button (click)="toggleLike(item.productId)"><i class="fas fa-heart"></i></button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="product-content">
+                            <div class="product-name">
+                                <h6><a [routerLink]="['/product-detail/'+item.productId]">{{item.name}}</a></h6>
+                            </div>
+                            <div class="product-price">
+                                <h6><del *ngIf="item.discount != 0">{{item.price|currency:'VND'}}</del>{{item.price*(1 - item.discount/100) | currency:'VND'}}</h6>
+                                <div class="product-rating" *ngIf="getAvgRate(item.productId)">
+                                    <i class="fas fa-star"></i><span>{{getAvgRate(item.productId)}}/{{countRate}}</span>
+                                </div>
+                            </div>
+                            <div class="product-btn">
+                                <a href="javascript:void(0);" style="cursor: pointer;" (click)="addCart(item.productId, item.price*(1 - item.discount/100))"><i
+                                        class="fas fa-shopping-basket"></i><span>Thêm Giỏ Hàng</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ngx-slick-carousel>
+        </div>
+    </div>
+</section>
+<section class="section best-part" *ngIf="!isLoading">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-heading">
+                    <h2 class="title">Sản phẩm bán chạy nhất</h2>
+                    <!-- <a href="product-list-1.html" class="btn btn-outline"><i class="fas fa-eye"></i>Xem thêm</a> -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
+                <div ngxSlickItem class="slide col-3" *ngFor="let item of productSeller | paginate: { itemsPerPage: 8, currentPage: 0}">
+                    <div class="product-card" *ngIf="item.quantity>0">
+                        <div class="product-img">
+                            <img [src]="item.image" [routerLink]="['/product-detail/'+item.productId]" style="cursor: pointer;" alt="product" />
+                            <ul class="product-widget">
+                                <li>
+                                    <button [routerLink]="['/product-detail/'+item.productId]"><i
+                                            class="fas fa-eye"></i></button>
+                                </li>
+                                <li>
+                                    <button (click)="toggleLike(item.productId)"><i class="fas fa-heart"></i></button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="product-content">
+                            <div class="product-name">
+                                <h6><a [routerLink]="['/product-detail/'+item.productId]">{{item.name}}</a></h6>
+                            </div>
+                            <div class="product-price">
+                                <h6><del *ngIf="item.discount != 0">{{item.price|currency:'VND'}}</del>{{item.price*(1 - item.discount/100) | currency:'VND'}}</h6>
+                                <div class="product-rating" *ngIf="getAvgRate(item.productId)">
+                                    <i class="fas fa-star"></i><span>{{getAvgRate(item.productId)}}/{{countRate}}</span>
+                                </div>
+                            </div>
+                            <div class="product-btn">
+                                <a href="javascript:void(0);" style="cursor: pointer;" (click)="addCart(item.productId, item.price*(1 - item.discount/100))"><i
+                                        class="fas fa-shopping-basket"></i><span>Thêm Giỏ Hàng</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ngx-slick-carousel>
+        </div>
+    </div>
+</section>
+<section class="section new-part" *ngIf="!isLoading">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="section-heading">
+                    <h2 class="title">Sản phẩm mới</h2>
+                    <!-- <a href="product-list-1.html" class="btn btn-outline"><i class="fas fa-eye"></i>Xem thêm</a> -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <ngx-slick-carousel class="carousel" #slickModal="slick-carousel" [config]="slideConfig">
+                <div ngxSlickItem class="slide" style="width: 100px;" *ngFor="let item of productLatest | paginate: { itemsPerPage: 8, currentPage: 0}">
+                    <div class="product-card" *ngIf="item.quantity>0">
+                        <div class="product-img">
+                            <img [src]="item.image" [routerLink]="['/product-detail/'+item.productId]" style="cursor: pointer;" alt="product" />
+                            <ul class="product-widget">
+                                <li>
+                                    <button [routerLink]="['/product-detail/'+item.productId]"><i
+                                            class="fas fa-eye"></i></button>
+                                </li>
+                                <li>
+                                    <button (click)="toggleLike(item.productId)"><i class="fas fa-heart"></i></button>
+                                </li>
+                            </ul>
+                        </div>
+                        <div class="product-content">
+                            <div class="product-name">
+                                <h6><a [routerLink]="['/product-detail/'+item.productId]">{{item.name}}</a></h6>
+                            </div>
+                            <div class="product-price">
+                                <h6><del *ngIf="item.discount != 0">{{item.price|currency:'VND'}}</del>{{item.price*(1 - item.discount/100) | currency:'VND'}}</h6>
+                                <div class="product-rating" *ngIf="getAvgRate(item.productId)">
+                                    <i class="fas fa-star"></i><span>{{getAvgRate(item.productId)}}/{{countRate}}</span>
+                                </div>
+                            </div>
+                            <div class="product-btn">
+                                <a href="javascript:void(0);" style="cursor: pointer;" (click)="addCart(item.productId, item.price*(1 - item.discount/100))"><i
+                                        class="fas fa-shopping-basket"></i><span>Thêm Giỏ Hàng</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </ngx-slick-carousel>
+        </div>
+    </div>
+</section>
+<br>

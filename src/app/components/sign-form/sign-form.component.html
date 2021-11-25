@@ -1,0 +1,86 @@
+<div class="sign-form">
+    <div class="sign-cate">
+        <ul class="nav nav-tabs">
+            <li>
+                <a href="#signin" class="nav-link active" data-toggle="tab">Đăng nhập</a>
+            </li>
+            <li>
+                <a href="#signup" class="nav-link" data-toggle="tab">Đăng ký</a>
+            </li>
+        </ul>
+    </div>
+    <div class="tab-pane active" id="signin">
+        <div class="sign-heading">
+            <h2>Đăng nhập</h2>
+            <p>Sử dụng thông tin đăng nhập để truy cập tài khoản của bạn.</p>
+        </div>
+        <form class="form" [formGroup]="loginForm">
+            <label class="form-label">
+                <input type="text" formControlName="email" placeholder="Email" />
+            </label>
+            <div class="form-label">
+                <input type="password" [type]="show ? 'text' : 'password'" formControlName="password" id="password"
+                    placeholder="Mật khẩu" />
+                <button type="button" (click)="toggle()"><i class="eye fas fa-eye"></i></button>
+            </div>
+            <label class="form-link">
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="signin-check" />
+                </div>
+                <app-forgot-password></app-forgot-password>
+            </label>
+            <label class="form-btn"><button (click)="sign_in()" type="submit" class="btn btn-outline">
+                    Đăng nhập
+                </button></label>
+        </form>
+    </div>
+    <div class="tab-pane" id="signup">
+        <div class="sign-heading">
+            <h2>Đăng ký</h2>
+            <p>Thiết lập một tài khoản mới.</p>
+        </div>
+        <form class="form" [formGroup]="registerForm">
+
+            <label class="form-label"><input type="text" class="form-control"
+                    [ngClass]="{'is-invalid':registerForm.get('email')?.touched && registerForm.get('email')?.invalid}"
+                    formControlName="email" placeholder="Email" />
+            </label>
+
+            <label class="form-label">
+                <div class="input-group">
+                    <input type="text" maxlength="6"
+                    [ngClass]="{'is-invalid':registerForm.get('otp')?.touched && registerForm.get('otp')?.invalid}"
+                    formControlName="otp" placeholder="Mã xác thực OTP" name="otp" id="otp" class="form-control">
+                    <!-- <div class="input-group-append"> -->
+                        <a class="btn btn-outline-success pb-0" (click)="registerForm.get('email')?.valid?sendOtp():sendError()"><span>Lấy OTP</span></a>
+                    <!-- </div> -->
+                </div>
+                
+            </label>
+
+            <label class="form-label"><input type="text" class="form-control"
+                    [ngClass]="{'is-invalid':registerForm.get('name')?.touched && registerForm.get('name')?.invalid}"
+                    formControlName="name" placeholder="Họ và tên" />
+            </label>
+            <label class="form-label"><input class="form-control" type="password"
+                    [ngClass]="{'is-invalid':registerForm.get('password')?.touched && registerForm.get('password')?.invalid}"
+                    id="pass" [type]="show ? 'text' : 'password'" placeholder="Mật khẩu" formControlName="password" />
+                <button type="button" (click)="toggle()">
+                    <i class="eye fas fa-eye"></i></button>
+            </label>
+            <label class="form-label"><input type="text" class="form-control" formControlName="phone"
+                    [ngClass]="{'is-invalid':registerForm.get('phone')?.touched && registerForm.get('phone')?.invalid}"
+                    placeholder="Số điện thoại" />
+            </label>
+            <label class="form-label"><input type="text" class="form-control" formControlName="address"
+                    [ngClass]="{'is-invalid':registerForm.get('address')?.touched && registerForm.get('address')?.invalid}"
+                    placeholder="Địa chỉ" />
+            </label>
+            <div class="form-btn">
+                <button type="submit" (click)="sign_up()" class="btn btn-outline">
+                    Đăng ký miễn phí
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
